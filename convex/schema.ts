@@ -1,4 +1,4 @@
-import { conversations } from './../src/dummy-data/db';
+import { conversations, messages } from './../src/dummy-data/db';
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -17,5 +17,12 @@ export default defineSchema({
         groupName: v.optional(v.string()),
         groupImage: v.optional(v.string()),
         admin: v.optional(v.id("users")),
-    })
+    }),
+
+    messages : defineTable({
+        conversation: v.id("conversations"),
+        sender: v.string(), // chatgpt
+        content: v.string(),
+        messageType: v.union(v.literal("text"), v.literal("image"), v.literal("video")),
+    }).index("by_conversation", ["conversation"])
 });
